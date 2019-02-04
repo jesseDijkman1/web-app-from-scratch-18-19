@@ -45,7 +45,7 @@ function displayData (data) {
     joke.textContent = d.value;
     jokeWrapper.appendChild(joke);
 
-    jokeRefreshBtn.textContent = "Refresh";
+    jokeRefreshBtn.innerHTML = "&#8635";
     jokeRefreshBtn.addEventListener("click", refreshJoke);
     jokeWrapper.appendChild(jokeRefreshBtn);
 
@@ -57,7 +57,10 @@ function refreshJoke(e) {
   let category = e.target.parentElement.children[0].textContent,
       joke = e.target.parentElement.children[1];
 
+  e.target.parentElement.classList.add("refreshing");
+
   getData(`https://api.chucknorris.io/jokes/random?category=${category}`).then(ev => {
+    e.target.parentElement.classList.remove("refreshing");
     joke.textContent = JSON.parse(ev.target.responseText).value;
   });
 }
