@@ -4,6 +4,7 @@
 - [Description](#description-)
 - [To-Do](#to-do-)
 - [Process](#process-)
+  - [Week 1](#week-1)
 - [Code](#code-)
 - [Sources](#sources-)
 - [Licence](#licence-)
