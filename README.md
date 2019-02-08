@@ -14,6 +14,8 @@
 ## Description 📖
 For this course I'm going to make a web-app without libraries or frameworks. The app will make XMLHttpRequests to an API and display the data in the HTML; without a template engine. For making requests I use ```Promise.all```. This code is shown down below. 
 
+_To get the gifs in the index.html write the url as following: .../index.html?key={key from giphy}_
+
 ---
 
 ## To-Do 📜
