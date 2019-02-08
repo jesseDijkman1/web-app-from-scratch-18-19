@@ -1,6 +1,7 @@
 # Jesse Dijkman - Web App from scratch (2019)
 
 ## Table of Contents
+<<<<<<< HEAD
 - [Description](#description-)
 - [To-Do](#to-do-)
 - [Process](#process-)
@@ -35,6 +36,12 @@ Monday we all started with the minor: web-development and started with this cour
 ## Code 🤓
 
 **Getting data from an API**
+=======
+
+---
+
+# Code
+>>>>>>> 44194c3... Readme
 ```js
 function getData(url) {
   return new Promise((resolve, reject) => {
@@ -45,6 +52,7 @@ function getData(url) {
   })
 }
 ```
+<<<<<<< HEAD
 Just to make it easier I use a promise which takes the url as parameter so you can make a request anywhere in the app.js file.
 
 
@@ -75,3 +83,5 @@ I used ```Promise.all``` in [Frontend-data](https://github.com/jesseDijkman1/fro
 
 ## Licence 👮‍♂️
 MIT © Jesse Dijkman
+=======
+>>>>>>> 44194c3... Readme
