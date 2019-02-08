@@ -1,8 +1,6 @@
 # Jesse Dijkman - Web App from scratch (2019)
 
 ## Table of Contents
-<<<<<<< HEAD
-<<<<<<< HEAD
 - [Description](#description-)
 - [To-Do](#to-do-)
 - [Process](#process-)
@@ -37,48 +35,6 @@ Monday we all started with the minor: web-development and started with this cour
 ## Code 🤓
 
 **Getting data from an API**
-=======
-
----
-
-# Code
->>>>>>> 44194c3... Readme
-=======
-- [Description](#description-)
-- [To-Do](#to-do-)
-- [Process](#process-)
-  - [Week 1](#week-1)
-- [Code](#code-)
-- [Sources](#sources-)
-- [Licence](#licence-)
-
----
-
-## Description 📖
-For this course I'm going to make a web-app without libraries or frameworks. The app will make XMLHttpRequests to an API and display the data in the HTML; without a template engine. For making requests I use ```Promise.all```. This code is shown down below. 
-
-_To get the gifs in the index.html write the url as following: .../index.html?key={key from giphy}_
-
----
-
-## To-Do 📜
-- [x] Render the index.html with data fetched from an API. ✅
-- [ ] Render a detail.html when clicking on an article/(piece of data)
-- [ ] Make a second App with better data
-- [ ] Finish this README
-
----
-
-## Process ⏳
-### Week 1
-Monday we all started with the minor: web-development and started with this course. The assignment for week 1 was to render an index.html without frameworks or libraries. Fairly easy, so I was finished with this part on Monday.
-
----
-
-## Code 🤓
-
-**Getting data from an API**
->>>>>>> 7f82e5f... Update README.md
 ```js
 function getData(url) {
   return new Promise((resolve, reject) => {
@@ -89,12 +45,8 @@ function getData(url) {
   })
 }
 ```
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 7f82e5f... Update README.md
-Just to make it easier I use a promise which takes the url as parameter so you can make a request anywhere in the app.js file.
 
+Just to make it easier I use a promise which takes the url as parameter so you can make a request anywhere in the app.js file.
 
 **Making multiple request**
 ```js
@@ -123,8 +75,3 @@ I used ```Promise.all``` in [Frontend-data](https://github.com/jesseDijkman1/fro
 
 ## Licence 👮‍♂️
 MIT © Jesse Dijkman
-<<<<<<< HEAD
-=======
->>>>>>> 44194c3... Readme
-=======
->>>>>>> 7f82e5f... Update README.md
