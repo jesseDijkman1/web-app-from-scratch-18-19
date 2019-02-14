@@ -32,7 +32,7 @@ My chucknorris app didn't handle a lot of data, atleast not enough to render a d
 - Not a great documentation in my opining
 - __**There's an unknown rate limit**__
 
-**The rate limit**
+### The rate limit
 The Open Cannabis API has a rate limit of ... I don't know. I can't find it anywhere and it seems to be a bit random. The rate limit actually ruins my app and I don't know if there's a work around (because it isn't documented). 
 
 ---
