@@ -112,7 +112,7 @@ const template = {
 ---
 
 ## Sources 🗂
-- (Open Cannabis API)[https://api.otreeba.com/v1/seed-companies]
+- [Open Cannabis API](https://api.otreeba.com/swagger/)
 - [How to write your own Virtual DOM](https://medium.com/@deathmood/how-to-write-your-own-virtual-dom-ee74acc13060)
 - [Image not found](https://www.unesale.com/ProductImages/Large/notfound.png)
 
