@@ -158,5 +158,5 @@ function pageDetail() {
 
 // Render the error page for when a page is not found
 function pageNotFound() {
-  console.log("not found")
+  alert("404 - Page not found")
 }
