@@ -1,21 +1,26 @@
 "use strict";
 
-window.addEventListener("load", () => {
-  if (!window.location.hash) {
-    window.location.hash = "#home/1";
-  }
-})
+import {createElement, templates} from "./modules/templater.js"
 
 const urls = {
   characters: "https://rickandmortyapi.com/api/character/"
 }
 
+const app = {
+  init: () => {
+    if (!window.location.hash || window.location.hash == "#home") {
+      // page 1 and 2 give the same data
+      window.location.hash = "#home/1"
+    }
+  },
+  changeHash: newHash => window.location.hash = newHash
+}
+
 const router = {
-  home: (page) => {
-    api.get(`${urls.characters}?page=${page}`)
-      .then(data => {
-        render.home(JSON.parse(data.target.responseText))
-      })
+  home: page => {
+    api.get(`${urls.characters}?page=${page}`, page)
+      .then(data => render.home(data))
+      .catch(error => console.log(error))
   },
   detail: (id) => {
     console.log(id)
@@ -23,69 +28,57 @@ const router = {
 }
 
 const api = {
-  get: (url) => {
+  get: (url, page) => {
     return new Promise((resolve, reject) => {
-      const apiReq = new XMLHttpRequest();
-      apiReq.open("GET", url);
-      apiReq.addEventListener("load", resolve);
-      apiReq.send();
+      const storageData = sessionStorage.getItem(`listData_${page}`);
+      console.log(url, page)
+
+      if (storageData) {
+        console.log("Connection with sessionStorage")
+
+        resolve(JSON.parse(storageData))
+      } else {
+
+      console.log("Connection with api")
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", url);
+      xhr.addEventListener("load", res => {
+        const listData = JSON.parse(res.target.responseText).results;
+
+        sessionStorage.setItem(`listData_${page}`, JSON.stringify(listData));
+        resolve(listData)
+      });
+      xhr.addEventListener("error", reject);
+      xhr.send();
+      }
     });
   }
 }
 
 const render = {
-  create: (node) => {
-    if (typeof node === "string") {
-      return document.createTextNode(node);
-    }
-
-    const el = document.createElement(node.type);
-
-    for (let prop in node.props) {
-      if (prop == "style") {
-        for (let css in node.props[prop]) {
-          el.style[css] = node.props[prop][css];
-        }
-      } else {
-        el.setAttribute(prop, node.props[prop]);
-      }
-    }
-
-    node.children
-      .map(render.create)
-      .forEach(elChild => el.appendChild(elChild));
-
-    return el;
-  },
-  home: function(data) {
+  home: (data) => {
     const main = document.querySelector("main");
+    main.innerHTML = "";
 
-    data.results.forEach((d, i) => {
-      const template = {
-          type: "ARTICLE", props: {"data-charId": d.id}, children: [
-            {type: "H1", props: {}, children: [d.name]},
-            {type: "IMG", props: {src: d.image}, children: [""]}
-          ]
-        }
+    data.forEach(d => {
 
-      const element = render.create(template);
+      const element = createElement(templates.home(d));
 
-      element.addEventListener("click", () => {
-        window.location.hash = `#detail/${i}`;
-      })
+      element.addEventListener("click", () => app.changeHash(`#detail/character/${d.id}`));
 
       main.appendChild(element)
     })
-
   }
 }
-
 
 routie({
   "home/:page": (page) => {
     router.home(page)
   },
-  "detail/:id": (id) => {
+  "detail/character/:id": (id) => {
     router.detail(id)
   }
 })
+
+app.init()
