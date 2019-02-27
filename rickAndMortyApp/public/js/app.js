@@ -7,59 +7,88 @@ const urls = {
 }
 
 const app = {
-  init: () => {
-    if (!window.location.hash || window.location.hash == "#home") {
-      // page 1 and 2 give the same data
-      window.location.hash = "#home/1"
-    }
-  },
   changeHash: newHash => window.location.hash = newHash
 }
 
 const router = {
-  home: page => {
-    api.get(`${urls.characters}?page=${page}`, page)
-      .then(data => render.home(data))
-      .catch(error => console.log(error))
+  home: async (category, page) => {
+    let data;
+
+    try {
+      data = await api.tryFind(category, page)
+    } catch(notFound) {
+      try {
+        data = await api.get(urls[category], page)
+      } catch(err) {
+        throw err;
+      }
+    }
+
+    data = await filterData.characters(data);
+    data = await storeData.characters(data, page);
+
+    render.home(data)
   },
-  detail: (id) => {
-    console.log(id)
+  detail: (category, id) => {
+    api.tryFind(category, id)
+      .then(data => render.detail(data))
+      .catch(error => console.log(error)) // Need to do something with the error
   }
 }
 
 const api = {
-  get: (url, page) => {
+  currentPage: null,
+  tryFind: (prefix, identifier) => {
     return new Promise((resolve, reject) => {
-      const storageData = sessionStorage.getItem(`listData_${page}`);
-      console.log(url, page)
+      const storageData = JSON.parse(sessionStorage.getItem(`${prefix}_${identifier}`));
 
-      if (storageData) {
-        console.log("Connection with sessionStorage")
-
-        resolve(JSON.parse(storageData))
+      if (!storageData) {
+        reject()
       } else {
+        resolve(storageData)
+      }
+    })
+  },
+  get: function(url, page) {
+    this.currentPage = page;
 
-      console.log("Connection with api")
-
+    return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open("GET", url);
-      xhr.addEventListener("load", res => {
-        const listData = JSON.parse(res.target.responseText).results;
 
-        sessionStorage.setItem(`listData_${page}`, JSON.stringify(listData));
-        resolve(listData)
+      xhr.open("GET", url);
+
+      xhr.addEventListener("load", res => {
+        const data = JSON.parse(res.target.responseText).results;
+
+        resolve(data)
       });
+
       xhr.addEventListener("error", reject);
       xhr.send();
-      }
     });
+  },
+  find: function(id) {
+    return new Promise((resolve, reject) => {
+
+      let data = JSON.parse(sessionStorage.getItem(`characters_${this.currentPage}`));
+      data = data.find(d => d.id == id);
+      console.log(data)
+      // resolve(data);
+
+      if (!data) {
+        reject("cant find")
+      }
+    })
+
+
+
   }
 }
 
 const render = {
-  home: (data) => {
-    const main = document.querySelector("main");
-    main.innerHTML = "";
+  mainEl: document.querySelector("main"),
+  home: function(data) {
+    this.mainEl.innerHTML = "";
 
     data.forEach(d => {
 
@@ -67,17 +96,56 @@ const render = {
 
       element.addEventListener("click", () => app.changeHash(`#detail/character/${d.id}`));
 
-      main.appendChild(element)
+      this.mainEl.appendChild(element)
+    })
+  },
+  detail: function(data) {
+    this.mainEl.innerHTML = "";
+
+    const element = createElement(templates.detail(d));
+
+    console.log(data)
+  }
+}
+
+const filterData = {
+  characters: (data) => {
+    return data.map(d => {
+        return {
+          id: d.id,
+          name: d.name,
+          image: d.image,
+          details: {
+            species: d.species,
+            gender: d.gender,
+            location: d.location,
+            origin: d.origin,
+            status: d.status,
+            type: d.type
+          },
+          episodes: d.episode
+        }
     })
   }
 }
 
+const storeData = {
+  characters: (data, page) => {
+    sessionStorage.setItem(`characters_${page}`, JSON.stringify(data))
+
+    return data
+  }
+}
+
+// First load
+routie("home/characters/1")
+
 routie({
-  "home/:page": (page) => {
-    router.home(page)
+  "home/:category/:page": (category, page) => {
+    router.home(category, page)
   },
-  "detail/character/:id": (id) => {
-    router.detail(id)
+  "detail/:category/:id": (category, id) => {
+    router.detail(category, id)
   }
 })
 
