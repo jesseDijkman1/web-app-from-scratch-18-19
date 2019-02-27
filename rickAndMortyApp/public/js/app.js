@@ -9,6 +9,7 @@ const urls = {
 
 const app = {
   init: () => {
+    console.log("Init")
     let hash = window.location.hash || undefined;
 
     if (!hash) {
@@ -19,18 +20,21 @@ const app = {
 }
 
 const router = {
-  home: async (category, page) => {
+  home: async function(category, page) {
+    console.log("router async")
     let data;
     try {
+
       data = await api.tryFind(category, page)
+      console.log("tryfind home")
     } catch(notFound) {
       try {
+        console.log("get home")
         data = await api.get(`${urls[category]}/?page=${page}`, page)
       } catch(err) {
         render.error(404, "Page not found")
       }
     }
-    console.log(data)
 
     data = await filterData[category](data);
     await storeData.list(category, page, data);
@@ -38,22 +42,23 @@ const router = {
     render.list(category, data)
   },
   detail: async (category, id) => {
-    console.log(category, id)
     let data;
 
     try {
       data = await api.findDetail(category, id)
+      console.log("find detail")
     } catch(notFound) {
       try {
+
         data = await api.get(`${urls[category]}/${id}`)
+        data = await filterData[category](data);
+
       } catch(err) {
-        render.error(404, "Character not found")
+        return render.error(404,  `${toSingular(category)} not found`)
       }
     }
 
-    data = await filterData[category](data);
     await storeData.detail(category, id, data);
-
     render.detail(category, data)
     // api.findDetail(category, id)
     //   .then()
@@ -62,10 +67,13 @@ const router = {
 
 const api = {
   currentPage: null,
-  tryFind: (category, page) => {
+  tryFind: function(category, page) {
+    console.log(this.currentPage)
+    console.log("try find")
     this.currentPage = page;
     console.log("Getting data from storage")
     return new Promise((resolve, reject) => {
+      console.log(category, page)
       const storageData = JSON.parse(sessionStorage.getItem(`${category}_${page}`));
 
       if (!storageData) {
@@ -77,10 +85,7 @@ const api = {
   },
   get: function(url, page = null) {
     this.currentPage = page;
-    console.log("IDKaowiejf")
-    // url += `/?page=${page}`;
 
-    console.log(url)
     console.log("Getting data from api")
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -100,17 +105,15 @@ const api = {
   findDetail: function(category, id) {
     return new Promise((resolve, reject) => {
     let singleData = JSON.parse(sessionStorage.getItem(`${toSingular(category)}_${id}`));
-    console.log(singleData)
+
     if (!singleData) {
-      console.log("ofiajw allaha")
       if (!this.currentPage) {
-        console.log("oiwajfe 309250")
         reject()
       }
 
       let data = JSON.parse(sessionStorage.getItem(`${category}_${this.currentPage}`));
       data = data.find(d => d.id == id);
-      console.log(data)
+
       if (!data) {
 
         reject()
@@ -119,7 +122,6 @@ const api = {
       }
 
     } else {
-      console.log("tesetein")
       resolve(singleData);
     }
     })
@@ -151,7 +153,6 @@ const render = {
     const element = createElement(templates[toSingular(category)](data));
 
     this.mainEl.appendChild(element)
-    console.log(data)
   },
   error: function(errorCode, msg) {
     this.mainEl.innerHTML = "";
@@ -190,8 +191,7 @@ const filterData = {
 
   },
   episodes: (data) => {
-
-    return data.map(d => {
+    function dataStructure(d) {
       return {
         id: d.id,
         name: d.name,
@@ -199,7 +199,13 @@ const filterData = {
         air_date: d.air_date,
         characters: d.characters
       }
-    })
+    }
+
+    if (!data.length) {
+      return dataStructure(data)
+    } else {
+      return data.map(dataStructure)
+    }
   }
 }
 
