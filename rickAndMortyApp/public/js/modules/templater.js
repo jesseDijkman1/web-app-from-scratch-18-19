@@ -1,7 +1,7 @@
 "use strict";
 
 const templates = {
-  home: (data) => {
+  characters: (data) => {
     return {
       type: "ARTICLE", props: {"data-charId": data.id}, children: [
         {type: "H1", props: {}, children: [data.name]},
@@ -9,23 +9,39 @@ const templates = {
       ]
     }
   },
-  detail: (data) => {
+  episodes: (data) => {
+    return {
+      type: "ARTICLE", props: {"data-epId": data.id}, children: [
+        {type: "H1", props: {}, children: [data.name]},
+        {type: "H2", props: {}, children: [data.air_date]}
+      ]
+    }
+  },
+  character: (data) => {
     return {
       type: "HEADER", props: {}, children: [
         {type: "IMG", props: {src: data.image}, children: [""]},
-        {type: "H1", props: {}, children: [data.name]},
-        {type: "SECTION", props: {}, children: [
-          {type: "H2", props: {}, children: ["Specs"]},
-          {type: "TABLE", props: {}, children: [
-            {type: "TR", props: {}, children: [
-              {type: "TH", props: {}, children: ["Category"]},
-              {type: "TH", props: {}, children: ["Value"]}
-            ]},
-            data.details.forEach(detail => {
-              console.log(detail)
-            })
-          ]}
-        ]}
+        {type: "H1", props: {}, children: [data.name]}
+        // {type: "SECTION", props: {}, children: [
+        //   {type: "H2", props: {}, children: ["Specs"]},
+        //   {type: "TABLE", props: {}, children: [
+        //     {type: "TR", props: {}, children: [
+        //       {type: "TH", props: {}, children: ["Category"]},
+        //       {type: "TH", props: {}, children: ["Value"]}
+        //     ]},
+        //     data.details.forEach(detail => {
+        //       console.log(detail)
+        //     })
+        //   ]}
+        // ]}
+      ]
+    }
+  },
+  error: (errorCode, msg) => {
+    return {
+      type: "DIV", props: {}, children: [
+        {type: "H1", props: {}, children: [errorCode]},
+        {type: "H2", props: {}, children: [msg]}
       ]
     }
   }
