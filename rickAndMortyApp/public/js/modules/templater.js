@@ -26,10 +26,11 @@ const templates = {
     }
   },
   character: (data) => {
+    console.log(data)
     return {
-      type: "HEADER", props: {}, children: [
-        {type: "IMG", props: {src: data.image}, children: [""]},
+      type: "DIV", props: {}, children: [
         {type: "H1", props: {}, children: [data.name]},
+        {type: "IMG", props: {src: data.image}, children: [""]},
         {type: "SECTION", props: {}, children: [
           {type: "H2", props: {}, children: ["Specs"]},
           {type: "TABLE", props: {}, children: [
@@ -59,12 +60,14 @@ const templates = {
             ]}
           ]}
         ]},
-        {type: "UL", props: {}, children:
+        {type: "OL", props: {}, children:
           data.episodes.map(episode => {
             let episodeNr = episode.split("/").reverse()[0];
-            return {type: "LI", props: {}, children: [`Episode - ${episodeNr}`]}
-          })
+            return {type: "A", props: {href: `#detail/episodes/${episodeNr}`}, children: [
+              {type: "LI", props: {href: `#detail/episodes/${episodeNr}`}, children: [`Episode - ${episodeNr}`]}
+          ]
         }
+      })}
       ]
     }
   },

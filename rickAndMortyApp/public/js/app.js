@@ -16,37 +16,45 @@ const app = {
       window.location.hash = "#home/characters/1"
     }
   },
-  changeHash: newHash => window.location.hash = newHash
+  changeHash: newHash => window.location.hash = newHash,
+  loader: display => {
+    document.getElementById("loader").style.display = display;
+  }
 }
 
 const router = {
+
   home: async function(category, page) {
-    console.log("router async")
+    app.loader("flex")
+    console.log(category, page)
+
     let data;
     try {
 
-      data = await api.tryFind(category, page)
-      console.log("tryfind home")
+      data = await api.tryFindList(category, page)
     } catch(notFound) {
+      console.log("wtf happening")
       try {
-        console.log("get home")
         data = await api.get(`${urls[category]}/?page=${page}`, page)
+        data = await filterData[category](data);
       } catch(err) {
-        render.error(404, "Page not found")
+        console.log("wtf happening")
+        app.loader("none")
+        return render.error(404, "Page not found")
       }
     }
 
-    data = await filterData[category](data);
-    await storeData.list(category, page, data);
 
-    render.list(category, data)
+    await storeData.list(category, page, data);
+    await render.list(category, data)
+    app.loader("none")
   },
   detail: async (category, id) => {
+    app.loader("flex")
     let data;
 
     try {
-      data = await api.findDetail(category, id)
-      console.log("find detail")
+      data = await api.tryFindDetail(category, id)
     } catch(notFound) {
       try {
 
@@ -54,12 +62,16 @@ const router = {
         data = await filterData[category](data);
 
       } catch(err) {
+        app.loader("none")
         return render.error(404,  `${toSingular(category)} not found`)
       }
     }
 
+
+    console.log("find", data)
     await storeData.detail(category, id, data);
-    render.detail(category, data)
+    await render.detail(category, data)
+    app.loader("none");
     // api.findDetail(category, id)
     //   .then()
   }
@@ -67,9 +79,7 @@ const router = {
 
 const api = {
   currentPage: null,
-  tryFind: function(category, page) {
-    console.log(this.currentPage)
-    console.log("try find")
+  tryFindList: function(category, page) {
     this.currentPage = page;
     console.log("Getting data from storage")
     return new Promise((resolve, reject) => {
@@ -94,15 +104,18 @@ const api = {
 
       xhr.addEventListener("load", res => {
         const data = JSON.parse(res.target.responseText).results || JSON.parse(res.target.responseText);
+        console.log("uuuuum", data)
         resolve(data)
       });
 
-      xhr.addEventListener("error", reject);
+      xhr.addEventListener("error", () => {
+        reject()
+      });
       xhr.send();
 
     });
   },
-  findDetail: function(category, id) {
+  tryFindDetail: function(category, id) {
     return new Promise((resolve, reject) => {
     let singleData = JSON.parse(sessionStorage.getItem(`${toSingular(category)}_${id}`));
 
@@ -135,8 +148,19 @@ function toSingular(str) {
 
 const render = {
   mainEl: document.querySelector("main"),
+  mainTitle: function(category) {
+    let el = document.createElement("H1");
+    let txt = document.createTextNode(`Rick and Morty - ${category}`)
+    el.appendChild(txt)
+    el.classList.add("main-title")
+
+    this.mainEl.appendChild(el)
+  },
   list: function(category, data) {
     this.mainEl.innerHTML = "";
+    this.mainEl.className = "list";
+
+    this.mainTitle(category)
 
     data.forEach(d => {
 
@@ -149,6 +173,7 @@ const render = {
   },
   detail: function(category, data) {
     this.mainEl.innerHTML = "";
+    this.mainEl.className = "detail";
 
     const element = createElement(templates[toSingular(category)](data));
 
@@ -156,6 +181,7 @@ const render = {
   },
   error: function(errorCode, msg) {
     this.mainEl.innerHTML = "";
+    this.mainEl.className = "error";
 
     const element = createElement(templates.error(errorCode.toString(), msg))
 
@@ -209,10 +235,6 @@ const filterData = {
   }
 }
 
-// function storeData(category, page, data) {
-//
-//   sessionStorage.setItem(`${category}_${page}`, JSON.stringify(data))
-// }
 
 const storeData = {
   list: (category, page, data) => {
@@ -220,17 +242,14 @@ const storeData = {
   },
   detail: (category, id, data) => {
     sessionStorage.setItem(`${toSingular(category)}_${id}`, JSON.stringify(data))
-    // sessionStorage
   }
 }
 
 routie({
   "home/:category/:page": (category, page) => {
-    console.log("in routie", category, page)
     router.home(category, page)
   },
   "detail/:category/:id": (category, id) => {
-    console.log("hash changed")
     router.detail(category, id)
   }
 })
