@@ -58,7 +58,7 @@ For this course I had to make two diagrams that helped explain my application; t
 
 ---
 
-## Reflection
+## Reflection 🧐
 There are a few things I would have like to add to make it feel more like an app:
 
 ### Pagination
@@ -75,7 +75,7 @@ Locations is just another category the API has. You can look up the location fro
 
 ---
 
-### Struggles
+### Struggles 🤬
 I had few struggles I dealt with. Not with code but with my brain. I know how I could add pagination but in this course I was pushed to think more about structure; so I hesitated a lot about where to put certain things. 
 
 Also thinking about names is not my "thing".
