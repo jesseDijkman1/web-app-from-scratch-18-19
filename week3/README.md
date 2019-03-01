@@ -1,5 +1,5 @@
 # Jesse Dijkman - Web App from scratch (2019)
-## Week 3
+## Week 3 - Rick and Morty App
 
 ## Table of Contents 📋
 - [Description](#description-)
@@ -14,10 +14,10 @@
 ---
 
 ## Description 🧐
-This week was the final week of the course: WAFS (Web app from scratch). During this week I worked on the rickAndMorty app. The rick and morty app is the final iteration of the apps I made for this course. Although I'm not satisfied with it yet, (because I only had a few days) I'm pretty happy with the speed and the way it works. 
+This week was the final week of the course: WAFS (Web app from scratch). During this week I worked on the rickAndMorty app. The rick and morty app is the final iteration of the apps I made for this course. Although I'm not satisfied with it yet, (because I only had a few days) I'm pretty happy with the speed and the way it works. For this project I used a routie as my router. 
 
 ### API 🔌
-The rickAndMorty app uses the [rickAndMorty API](https://rickandmortyapi.com/). This API is free to use, has a rate limit of 10000 and **doesn't need authentication**. The API works really fast in my opinion ⚡️. It was a good API to create something with in just a few days. 
+The rickAndMorty app uses the [rickAndMorty API](https://rickandmortyapi.com/). This API is free to use, has a rate limit of 10000 and **doesn't need authentication**. The API works really fast in my opinion ⚡️. It's a good API to create something with, in just a few days. 
 
 ### Assignment 📙
 Make a client side web app based on data from an API. The app needs to render an overview and detail page. It also needs to include filter and sorting options ❌ (not enough time left). Write as much vanilla javascript, no frameworks (react, vue, etc).
@@ -45,7 +45,7 @@ During this week (last week) I had to finish two courses ([CSS-to-the-rescue](ht
 ---
 
 ## Diagrams 📊
-For this course I had to make two diagrams that helped explain my application. The actor diagram and the interaction diagram. 
+For this course I had to make two diagrams that helped explain my application; the actor diagram and the interaction diagram. 
 
 ### Actor Diagram 🤷‍♂️
 "An Actor diagram is focused on (code)objects that can be seen as the actors of your code. WHO handles functionality in your app." [Source](https://docs.google.com/document/d/17zwy1Kj4vqM5jqYWz7U6Spi_7i9ucucyBeAMDAfn0mY/edit)
@@ -62,6 +62,7 @@ For this course I had to make two diagrams that helped explain my application. T
 - [How to write your own Virtual DOM](https://medium.com/@deathmood/how-to-write-your-own-virtual-dom-ee74acc13060)
 - [Routie (mini-framework)](http://projects.jga.me/routie/)
 
+---
 
 ## Licence 👮‍♂️
 MIT © Jesse Dijkman
