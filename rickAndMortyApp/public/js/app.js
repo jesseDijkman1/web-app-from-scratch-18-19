@@ -256,6 +256,10 @@ const filterData = {
 }
 
 // Functions for storing the data in sessionStorage
+
+// I store the data in sessinostorage because the data doesn't need to be stored for long terms.
+// Localstorage would be used if I would give the option to add an article to favorites
+// I think this is semantically more correct (but I might be wrong)
 const storeData = {
   list: (category, page, data) => {
     sessionStorage.setItem(`${category}_${page}`, JSON.stringify(data));
