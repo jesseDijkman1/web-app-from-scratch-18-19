@@ -7,7 +7,8 @@
   - [Assignment](#assignment-)
 - [Installation guide](#installation-guide-)
 - [Diagrams](#diagrams-)
-- [Code](#code-)
+- [Reflection](#reflection-)
+  - [Struggles](#struggles-)
 - [Sources](#sources-)
 - [Licence](#licence-)
 
@@ -54,6 +55,30 @@ For this course I had to make two diagrams that helped explain my application; t
 ### Interaction Diagram 🕹
 "The Interaction diagram focuses on WHAT happens in your code. It visualizes functions and shows how action flows through your application."[Source](https://docs.google.com/document/d/17zwy1Kj4vqM5jqYWz7U6Spi_7i9ucucyBeAMDAfn0mY/edit)
 ![Interaction diagram](https://github.com/jesseDijkman1/web-app-from-scratch-18-19/blob/master/files/interaction-diagram.png)
+
+---
+
+## Reflection
+There are a few things I would have like to add to make it feel more like an app:
+
+### Pagination
+You can go to detail pages and list pages for the characters and episodes. But there's no way to navigate to all of them with just your mouse. This could be fixed with pagination. 
+
+### Favorites
+Some fun and fairly easy to make functionality. User can click on a button and the data will be added to localstorage for longer storage.
+
+### Categories
+Although you see data about episodes and characters (episodes doesn't show a lot of data now, but it works). You can't click on a tab and be redirected to a different category.
+
+### Locations
+Locations is just another category the API has. You can look up the location from rick and morty. To get this data is the same as the others; I just need to add code to templater.
+
+---
+
+### Struggles
+I had few struggles I dealt with. Not with code but with my brain. I know how I could add pagination but in this course I was pushed to think more about structure; so I hesitated a lot about where to put certain things. 
+
+Also thinking about names is not my "thing".
 
 ---
 
